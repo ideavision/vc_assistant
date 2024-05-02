@@ -1,0 +1,14 @@
+# /app/dockerfile-gradio
+# Using Debian bullseye-slim as base image
+FROM python:3.11-slim-bullseye
+
+WORKDIR /app
+
+COPY ./requirements-gradio.txt .
+RUN apt-get update && apt-get install -y --no-install-recommends git && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    pip install --no-cache-dir -r requirements-gradio.txt
+
+COPY src/ui/gradio_interface.py src/ui/gradio_interface.py
+
+CMD ["python", "src/ui/gradio_interface.py"]
